@@ -88,6 +88,7 @@ public class MiscSettings extends ActionFragment implements
     private static final String RETICKER_STATUS = "reticker_status";
     private static final String KEY_EDGE_LIGHTING = "pulse_ambient_light";
     private static final String SMART_PIXELS = "smart_pixels";
+    private static final String ALERT_SLIDER_PREF = "alert_slider_notifications";
 
     // category keys
     private static final String CATEGORY_HWKEY = "hardware_keys";
@@ -124,6 +125,7 @@ public class MiscSettings extends ActionFragment implements
 
     private Preference mChargingLeds;
     private Preference mNotLights;
+    private Preference mAlertSlider;
     private PreferenceCategory mLedCategory;
     private CustomSeekBarPreference mFlashOnCallRate;
     private SystemSettingSwitchPreference mFlashOnCallIgnoreDND;
@@ -165,6 +167,12 @@ public class MiscSettings extends ActionFragment implements
             mLedCategory = findPreference(LED_CATEGORY);
             mLedCategory.setVisible(false);
         }
+
+        mAlertSlider = (Preference) prefSet.findPreference(ALERT_SLIDER_PREF);
+        boolean mAlertSliderAvailable = res.getBoolean(
+                com.android.internal.R.bool.config_hasAlertSlider);
+        if (!mAlertSliderAvailable)
+            prefSet.removePreference(mAlertSlider);
 
         if (!SparkUtils.deviceHasFlashlight(mContext)) {
             final PreferenceCategory flashlightCategory =

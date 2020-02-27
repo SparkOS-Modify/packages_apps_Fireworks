@@ -799,4 +799,9 @@
     <!-- Qs Morphing-->
     <string name="qs_enable_morphing">Enable Morphing on qs tiles</string>
     <string name="qs_invert_morphing">Swap Morphing on qs tiles</string>  
+
+    <!-- Alert Slider Notifications (OnePlus devices) -->
+    <string name="alert_slider_notifications_title">Alert slider notifications</string>
+    <string name="alert_slider_notifications_summary">Display notification when changing alert slider position</string>
+
 </resources>
