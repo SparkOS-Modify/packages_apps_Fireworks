@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.os.Bundle;
+import com.spark.settings.fragments.SmartPixels;
 import android.os.Handler;
 import android.os.SystemProperties;
 import android.os.UserHandle;
@@ -87,6 +88,7 @@ public class MiscSettings extends ActionFragment implements
     private static final String RETICKER_STATUS = "reticker_status";
     private static final String KEY_EDGE_LIGHTING = "pulse_ambient_light";
     private static final String ALERT_SLIDER_PREF = "alert_slider_notifications";
+    private static final String SMART_PIXELS = "smart_pixels";
 
     // category keys
     private static final String CATEGORY_HWKEY = "hardware_keys";
@@ -117,6 +119,7 @@ public class MiscSettings extends ActionFragment implements
     public static final int KEY_MASK_CAMERA = 0x20;
     public static final int KEY_MASK_VOLUME = 0x40;
 
+    private Preference mSmartPixels;
     private CustomSeekBarPreference mButtonTimoutBar;
     private CustomSeekBarPreference mManualButtonBrightness;
     private PreferenceCategory mButtonBackLightCategory;
@@ -209,6 +212,12 @@ public class MiscSettings extends ActionFragment implements
             mStreamSpoof = (SwitchPreference) findPreference(KEY_STREAM_SPOOF);
             mStreamSpoof.setChecked(SystemProperties.getBoolean(SYS_STREAM_SPOOF, true));
             mStreamSpoof.setOnPreferenceChangeListener(this);
+
+           mSmartPixels = (Preference) findPreference(SMART_PIXELS);
+           boolean mSmartPixelsSupported = getResources().getBoolean(
+                 com.android.internal.R.bool.config_supportSmartPixels);
+           if (!mSmartPixelsSupported)
+                 prefSet.removePreference(mSmartPixels);
         }
 
         final boolean needsNavbar = ActionUtils.hasNavbarByDefault(getActivity());
@@ -421,6 +430,8 @@ public class MiscSettings extends ActionFragment implements
                     List<String> keys = super.getNonIndexableKeys(context);
 
                     LineageHardwareManager mLineageHardware = LineageHardwareManager.getInstance(context);
+                    boolean mSmartPixelsSupported = context.getResources().getBoolean(
+                            com.android.internal.R.bool.config_supportSmartPixels);
 
                     if (!isKeyDisablerSupported(context)) {
                         keys.add(HWKEY_DISABLE);
@@ -432,6 +443,8 @@ public class MiscSettings extends ActionFragment implements
                         keys.add(CATEGORY_APPSWITCH);
                     }
 
+                    if (!mSmartPixelsSupported)
+                        keys.add(SMART_PIXELS);
                     return keys;
                 }
             };
